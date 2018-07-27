@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <style>
+      table, th, td {
+	  border: 1px solid black;
+      }
+    </style>
+    <title>Hotspot Application</title>
+  </head>
+  <body bgcolor=white>
+
+    <h1>Hotspot</h1>
+
+    {% if data %}
+
+    <table>
+      <tr>
+	<th>Name</th>
+	<th>Address</th>
+      </tr>
+
+      {% for item in data %}
+      <tr>
+	<td>{{ item[2] }}</td>
+	<td>{{ item[3] }}</td>
+      </tr>
+	
+      {% endfor %}
+    </table>
+      
+    {% else %}
+    <p>No restaurant data is available.</p>
+    {% endif %}
+    
+  </body>
+</html>
