@@ -11,31 +11,46 @@
 
     <h1>Hotspot</h1>
 
-    {% if data %}
+    <div style="background-color:linen;width:25%">
+      <form method="post", action="/">
+	Min Rating:<br>
+	<input type="text" name="minrating" style="background-color:linen"><br>
+	Max Rating:<br>
+	<input type="text" name="maxrating" style="background-color:linen"><br>
+	Price Range:<br>
+	<input type="text" name="pricerange" style="background-color:linen"><br>
+	Zipcode:<br>
+	<input type="text" name="zipcode" style="background-color:linen"><br>	
+	<input type="submit" value="Submit" style="margin:10px"> 
+      </form>
+    </div>
 
-    <table>
-      <tr>
-	<th>Name</th>
-	<th>Address</th>
-	<th>Zipcode</th>
-	<th>City</th>
-	<th>Rating</th>
-	<th>Price</th>		
-      </tr>
+     {% if data %}
+     <div style="overflow-y:auto;height:500px">
+       <table>
+	 <tr>
+	   <th>Name</th>
+	   <th>Address</th>
+	   <th>Zipcode</th>
+	   <th>City</th>
+	   <th>Rating</th>
+	   <th>Price</th>		
+	 </tr>
 
-      {% for item in data %}
-      <tr>
-	<td>{{ item[0] }}</td>
-	<td>{{ item[1] }}</td>
-	<td>{{ item[2] }}</td>
-	<td>{{ item[3] }}</td>
-	<td>{{ item[4] }}</td>
-	<td>{{ item[5] }}</td>
-      </tr>
-	
-      {% endfor %}
-    </table>
-      
+	 {% for item in data %}
+	 <tr>
+	   <td>{{ item[0] }}</td>
+	   <td>{{ item[1] }}</td>
+	   <td>{{ item[2] }}</td>
+	   <td>{{ item[3] }}</td>
+	   <td>{{ item[4] }}</td>
+	   <td>{{ item[5] }}</td>
+	 </tr>
+	 
+	 {% endfor %}
+       </table>
+     </div>
+       
     {% else %}
     <p>No restaurant data is available.</p>
     {% endif %}

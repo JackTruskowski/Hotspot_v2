@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS likes;
 CREATE TABLE restaurant (
        rest_id int PRIMARY KEY,
        rating real,
-       name text,
+       rname text,
        address text,
        phone text,
        website text,
@@ -16,14 +16,14 @@ CREATE TABLE restaurant (
        years_open int,
        category string,
        zipcode text,
-       UNIQUE (name, address),
-       UNIQUE (name, phone)
+       UNIQUE (rname, address),
+       UNIQUE (rname, phone)
 );
 
 CREATE TABLE city (
        zipcode int PRIMARY KEY,
        state text,
-       name text,
+       cname text,
        neighborhood text
 );
 

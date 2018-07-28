@@ -5,6 +5,35 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 
+def do_query(min_rating, max_rating, price_range, zipcode):
+    query = "SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode"
+    if min_rating or max_rating or price_range or zipcode:
+        query += " WHERE "
+    if min_rating:
+        query += "restaurant.rating >= " + str(min_rating)
+    if max_rating:
+        if min_rating:
+            query += " AND "
+        query += "restaurant.rating <= " + str(max_rating)
+    if price_range:
+        if min_rating or max_rating:
+            query += " AND "
+        query += "restaurant.price_range LIKE \"" + price_range + "\""
+    if zipcode:
+        try:
+            zip_code = int(zipcode)
+            if min_rating or max_rating or price_range:
+                query += " AND "
+            query += "restaurant.zipcode LIKE \"" + str(zip_code) + "\""
+        except:
+            print("invalid zip code")
+
+        
+        
+    #query += " LIMIT 20;"
+    return query
+    
+    
 
 def get_db():
     if 'db' not in g:
