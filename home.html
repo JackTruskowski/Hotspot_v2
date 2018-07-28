@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1561.6">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">
+.checked {
+    color: orange;
+}
+.header {
+  padding: 10px 16px;
+  background: #555;
+  color: #f1f1f1;
+}
+.content {
+  padding: 16px;
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%
+}
+.sticky + .content {
+  padding-top: 102px;
+}
+  #myInput {
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 50%; /* Full-width */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 20px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+}
+  div.a {
+    text-align: center;
+}
+  </style>
+</head>
+<body>
+	<div class="header" id="myHeader">
+  <h2>HotSpot Home</h2>
+  <div class="a">
+	  <form> name: <input type="text" name="res_name"></input>
+	  <select name="rating">
+		  <option value="" disabled selected>rating</option>
+		  <option value="one">1</option>
+		  <option value="onehalf">1.5</option>
+		  <option value="two">2</option>
+		  <option value="twohalf">2.5</option>
+		  <option value="three">3</option>
+		  <option value="threehalf">3.5</option>
+		  <option value="four">4</option>
+		  <option value="fourhalf">4.5</option>
+		  <option value="five">5</option>
+	  </select>
+	  <select name="price">
+		  <option value="" disabled selected>price range</option>
+		  <option value="oned">$</option>
+		  <option value="twod">$$</option>
+		  <option value="threed">$$$</option>
+		  <option value="fourd">$$$$</option>
+	  </select>
+	  <select name="city">
+		  <option value="" disabled selected>city</option>
+		  <option value="chicago">Chicago</option>
+		  <option value="dallas">Dallas</option>
+		  <option value="houston">Houston</option>
+		  <option value="la">Los Angeles</option>
+		  <option value="ny">New York</option>
+		  <option value="philadelphia">Philadelphia</option>
+		  <option value="phoenix">Phoenix</option>
+		  <option value="sanantonio">San Antonio</option>
+		  <option value="sandiego">San Diego</option>
+		  <option value="sanjose">San Jose</option>
+	  </select>
+	  <input type="submit" value="search">
+
+  </form>
+  </div>
+</div>
+<div class="content">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br>
+
+<br><br>
+<br>
+<br>
+</div>
+	<script>
+		window.onscroll = function() {myFunction()};
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+	</script>
+</body>
+</html>
