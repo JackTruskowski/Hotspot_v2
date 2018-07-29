@@ -61,6 +61,8 @@ def defaultPage():
         data = cur.fetchall()
         return render_template('index.html', data=data)
 
+            
+
     # Default data
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
@@ -68,3 +70,20 @@ def defaultPage():
     data = cur.fetchall()
 
     return render_template('index.html', data=data)
+
+@app.route('/search', methods=['GET', 'POST'])
+def searchPage():
+    if request.method == 'POST':
+        try:
+            search_term = request.form['search']
+        except:
+            search_term = None
+            
+        if search_term != None:
+            conn = sqlite3.connect(DATABASE)
+            cur = conn.cursor()
+            cur.execute("SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode WHERE restaurant.rname LIKE \"%" + search_term + "%\" LIMIT 100;")
+            data = cur.fetchall()
+
+            return render_template('index.html', data=data)
+

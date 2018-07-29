@@ -25,6 +25,15 @@
       </form>
     </div>
 
+    <form method="POST", action="/search">
+      Search: <br>
+      <input type="text" name="search">
+      <input type="submit" value="Submit">
+    </form>
+    <form method="GET", action = "/">
+      <input type="submit" value = "Clear"><br>
+    </form>
+
      {% if data %}
      <div style="overflow-y:auto;height:500px">
        <table>
