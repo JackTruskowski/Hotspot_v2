@@ -6,7 +6,7 @@ from flask.cli import with_appcontext
 
 
 def do_query(min_rating, max_rating, price_range, zipcode):
-    query = "SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode"
+    query = "SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode"
     if min_rating or max_rating or price_range or zipcode:
         query += " WHERE "
     if min_rating:
@@ -28,7 +28,7 @@ def do_query(min_rating, max_rating, price_range, zipcode):
         except:
             print("invalid zip code")
 
-        
+    query += " LIMIT 100 ;"
         
     #query += " LIMIT 20;"
     return query

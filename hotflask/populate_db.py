@@ -2,7 +2,7 @@ import csv
 import sqlite3
 import os
 
-MAX_COUNT = 1000
+MAX_COUNT = 100000
 
 conn = sqlite3.connect(os.path.realpath('../instance/hotflask.sqlite'))
 c = conn.cursor()
