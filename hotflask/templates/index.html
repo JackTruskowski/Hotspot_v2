@@ -34,7 +34,8 @@
 	   <th>Zipcode</th>
 	   <th>City</th>
 	   <th>Rating</th>
-	   <th>Price</th>		
+	   <th>Price</th>
+	   <th></th>
 	 </tr>
 
 	 {% for item in data %}
@@ -45,15 +46,26 @@
 	   <td>{{ item[3] }}</td>
 	   <td>{{ item[4] }}</td>
 	   <td>{{ item[5] }}</td>
+	   <td>
+	     <form method="POST", action="/user">
+	       <input type="hidden" name = "id" value="{{ item[6] }}">
+	       <input type="submit" value="Save">
+	     </form>
+	   </td>
 	 </tr>
 	 
 	 {% endfor %}
+	 
        </table>
      </div>
        
     {% else %}
     <p>No restaurant data is available.</p>
     {% endif %}
+
+    <form method="GET", action="/user">
+      <input type="submit" value="View Liked Restaurants" style="margin:15px">
+    </form>
     
   </body>
 </html>
