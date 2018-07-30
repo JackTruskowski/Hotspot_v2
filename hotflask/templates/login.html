@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <style>
+      table, th, td {
+	  border: 1px solid black;
+      }
+    </style>
+    <title>Login</title>
+  </head>
+  <body bgcolor=white>
+
+    <h1>User Login</h1>
+    
+    <form method="POST", action="/login">
+      <input type="text" name="username"><br>
+      <input type="password" id="password" name="password">
+      <div>
+	<input type="checkbox" id="newaccount" name="newaccount"
+               value="newaccount" checked />
+        <label for="newaccount">New Account</label>
+      </div>
+      
+      <input type="submit" value="Login" style="margin:10px">
+    </form>
+    {% if error %}
+    <br><b>{{ error }}</b>
+    {% endif %}
+  </body>
+</html>

@@ -3,14 +3,40 @@ import sqlite3
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask_login import current_user
+from flask_login import LoginManager
 import db
 
 app = Flask(__name__)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 DATABASE = os.path.join(PROJECT_ROOT, 'instance', 'hotflask.sqlite')
-USERNAME = "DefaultUser"
+USERNAME = "Default"
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+@app.route('/login', methods=['POST', 'GET'])
+def loginPage():
+
+    if request.method == 'POST':
+
+        if(request.form.get("newaccount") != None):
+            user = db.add_user(request.form.get("username"), request.form.get("password"))
+        else:
+            user = db.get_user(request.form.get("username"), request.form.get("password"))
+            
+        if not user:
+            return render_template('login.html', error="Failed to authenticate.")
+        else:
+            USERNAME = user[0]
+            return render_template('index.html', data=db.get_default_data())
+
+    return render_template('login.html', error=None)
 
 @app.route('/user', methods=['GET', 'POST'])
 def userPage():
@@ -53,21 +79,12 @@ def defaultPage():
         except:
             zipcode = None
         
-        conn = sqlite3.connect(DATABASE)
-        cur = conn.cursor()
-        query = db.do_query(rating_low, rating_high, price_range, zipcode)
-        print(query)
-        cur.execute(query)
-        data = cur.fetchall()
+        data = db.do_query(rating_low, rating_high, price_range, zipcode)
         return render_template('index.html', data=data)
 
-            
 
     # Default data
-    conn = sqlite3.connect(DATABASE)
-    cur = conn.cursor()
-    cur.execute("SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode LIMIT 100;")
-    data = cur.fetchall()
+    data = db.get_default_data()
 
     return render_template('index.html', data=data)
 
@@ -84,6 +101,8 @@ def searchPage():
             cur = conn.cursor()
             cur.execute("SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode WHERE restaurant.rname LIKE \"%" + search_term + "%\" LIMIT 100;")
             data = cur.fetchall()
+        else:
+            data = db.get_default_data()
 
-            return render_template('index.html', data=data)
+        return render_template('index.html', data=data)
 

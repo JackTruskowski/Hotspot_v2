@@ -1,11 +1,44 @@
 import sqlite3
-
+import os
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+DATABASE = os.path.join(PROJECT_ROOT, 'instance', 'hotflask.sqlite')
+
+def connect():
+    conn = sqlite3.connect(DATABASE)
+    cur=conn.cursor()
+    return cur
+
+def add_user(username, password):
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    try:
+        cur.execute("INSERT INTO user VALUES (?, ?)", (username, password))
+        conn.commit()
+        cur.execute("SELECT * FROM user WHERE username LIKE \"" + username + "\" AND password LIKE \"" + password + "\"")
+        data = cur.fetchone()
+        return data
+        
+    except:
+        return None
+
+def get_user(username, password):
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM user WHERE username LIKE \"" + username + "\" AND password LIKE \"" + password + "\"")
+    data = cur.fetchone()
+    return data
+    
+def get_default_data():
+    cur = connect()
+    cur.execute("SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode LIMIT 100;")
+    return(cur.fetchall())
 
 def do_query(min_rating, max_rating, price_range, zipcode):
+    cur = connect()
     query = "SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode"
     if min_rating or max_rating or price_range or zipcode:
         query += " WHERE "
@@ -31,7 +64,8 @@ def do_query(min_rating, max_rating, price_range, zipcode):
     query += " LIMIT 100 ;"
         
     #query += " LIMIT 20;"
-    return query
+    cur.execute(query)
+    return cur.fetchall()
     
     
 
