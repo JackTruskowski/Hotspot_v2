@@ -3,35 +3,65 @@ import os
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
+from werkzeug.security import generate_password_hash, check_password_hash
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 DATABASE = os.path.join(PROJECT_ROOT, 'instance', 'hotflask.sqlite')
 
+'''
+Creates a connection to the database
+'''
 def connect():
     conn = sqlite3.connect(DATABASE)
     cur=conn.cursor()
     return cur
 
+'''
+Adds a user to the database
+TODO: enforce unique username
+'''
 def add_user(username, password):
+
+    pw_hash = generate_password_hash(password)
+    
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     try:
-        cur.execute("INSERT INTO user VALUES (?, ?)", (username, password))
+        cur.execute("INSERT INTO user VALUES (?, ?)", (username, pw_hash))
         conn.commit()
-        cur.execute("SELECT * FROM user WHERE username LIKE \"" + username + "\" AND password LIKE \"" + password + "\"")
+        cur.execute("SELECT * FROM user WHERE username LIKE \"" + username + "\"")
         data = cur.fetchone()
-        return data
+        
+        if data and check_salted_password(password, data[1]):
+            return data
+        else:
+            return None
         
     except:
         return None
 
+    
+def check_salted_password(plaintext, salted):
+    return check_password_hash(salted, plaintext)
+
+'''
+Tries to return the corresponding user given a username and password
+'''
 def get_user(username, password):
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM user WHERE username LIKE \"" + username + "\" AND password LIKE \"" + password + "\"")
+    cur.execute("SELECT * FROM user WHERE username LIKE \"" + username + "\"")
     data = cur.fetchone()
-    return data
 
+    if data and check_salted_password(password, data[1]):
+        return data
+    else:
+        return None
+
+
+'''
+Returns a restaurant given its ID
+'''
 def get_restaurant(rest_id):
     cur = connect()
     try:
@@ -41,7 +71,9 @@ def get_restaurant(rest_id):
     except:
         return None
 
-    
+'''
+Given a username, pulls their likes and reservations from the relevant tables
+'''    
 def get_user_likes_and_reservations(username):
 
     cur = connect()
@@ -55,12 +87,18 @@ def get_user_likes_and_reservations(username):
     return (data, res)
 
     
-    
+'''
+Pulls some default data from the database (just the first 100 rows)
+'''    
 def get_default_data():
     cur = connect()
     cur.execute("SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode LIMIT 100;")
     return(cur.fetchall())
 
+
+'''
+Used for filtering, takes a number of filter parameters and builds and executes the query
+'''
 def do_query(min_rating, max_rating, price_range, zipcode):
     cur = connect()
     query = "SELECT restaurant.rname, restaurant.address, city.zipcode, city.cname, restaurant.rating, restaurant.price_range, restaurant.rest_id FROM restaurant INNER JOIN city on restaurant.zipcode=city.zipcode"
@@ -91,39 +129,3 @@ def do_query(min_rating, max_rating, price_range, zipcode):
     cur.execute(query)
     return cur.fetchall()
     
-    
-
-def get_db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(
-            current_app.config['DATABASE'],
-            detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
-
-    return g.db
-
-
-def close_db(e=None):
-    db = g.pop('db', None)
-
-    if db is not None:
-        db.close()
-
-def init_db():
-    db = get_db()
-
-    with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')    
-
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
