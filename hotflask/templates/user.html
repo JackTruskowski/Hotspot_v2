@@ -15,40 +15,69 @@
     <h1>[Unknown_User]</h1>
     {% endif %}
 
-    <h3>Saved Restaurants</h3>
     
-     {% if data %}
-    <div style="overflow-y:auto;height:500px">
-       <table>
-	 <tr>
-	   <th>Name</th>
-	   <th>Address</th>
-	   <th>Zipcode</th>
-	   <th>City</th>
-	   <th>Rating</th>
-	   <th>Price</th>
-	 </tr>
+    {% if data %}
+    <div style="overflow-y:auto;height:500px;display:inline-block">
+      
+      <h3>Saved Restaurants</h3>
+      <table>
+	<tr>
+	  <th>Name</th>
+	  <th>Address</th>
+	  <th>Zipcode</th>
+	  <th>City</th>
+	  <th>Rating</th>
+	  <th>Price</th>
+	</tr>
 
 
-	 {% for item in data %}
-	 <tr>
-	     <td>{{ item[0] }}</td>
-	     <td>{{ item[1] }}</td>
-	     <td>{{ item[2] }}</td>
-	     <td>{{ item[3] }}</td>
-	     <td>{{ item[4] }}</td>
-	     <td>{{ item[5] }}</td>
-	 </tr>
-	 
-	 {% endfor %}
-	 
+	{% for item in data %}
+	<tr>
+	  <td>{{ item[0] }}</td>
+	  <td>{{ item[1] }}</td>
+	  <td>{{ item[2] }}</td>
+	  <td>{{ item[3] }}</td>
+	  <td>{{ item[4] }}</td>
+	  <td>{{ item[5] }}</td>
+	</tr>
+	
+	{% endfor %}
+	
 
-       </table>
-     </div>
-       
+      </table>
+    </div>
+    
     {% else %}
     <p>No restaurant data is available.</p>
     {% endif %}
+
+    {% if res %}
+    <div style="overflow-y:auto;height:500px;display:inline-block">
+      
+      <h3>Reservations</h3>
+      <table>
+	<tr>
+	  <th>Restaurant Name</th>
+	  <th>Date</th>
+	</tr>
+
+
+	{% for item in res %}
+	<tr>
+	  <td>{{ item[0] }}</td>
+	  <td>{{ item[1] }}</td>
+
+	</tr>
+	
+	{% endfor %}
+	
+
+      </table>
+    </div>
+    {% else %}
+    <p>No reservation data is available.</p>
+    {% endif %}
+    
     
     <form method="GET", action = "/">
       <input type="submit" value = "Back">

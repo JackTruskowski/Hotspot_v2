@@ -33,7 +33,8 @@ CREATE TABLE user (
 );
 
 CREATE TABLE reservation (
-       reservation_id text PRIMARY KEY,
+       reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+       username text,
        date text,
        rest_id text,
        time text

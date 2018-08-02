@@ -78,21 +78,46 @@ def loginPage():
 
     return render_template('login.html', error=None)
 
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/userLike', methods=['GET', 'POST'])
 def userPage():
     
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     
     if request.method == 'POST':
-        cur.execute("INSERT INTO likes VALUES (?, ?)", (request.form['id'], session['username']))
+        cur.execute("INSERT INTO likes VALUES (?, ?)", (request.form['id'], session['user']))
         conn.commit()
 
-    cur.execute("SELECT x.rname, x.address, x.zipcode, city.cname, x.rating, x.price_range FROM (SELECT *  FROM restaurant r INNER JOIN likes ON r.rest_id=likes.restaurant_id)x INNER JOIN city ON x.zipcode=city.zipcode LIMIT 100;")
+    result = db.get_user_likes_and_reservations(session['user'])
     
-    data = cur.fetchall()
-    return render_template('user.html', data=data, user=session['username'])
+    return render_template('user.html', data=result[0], res=result[1], user=session['user'])
 
+@app.route('/userRes', methods=['GET', 'POST'])
+def userRes():
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+
+    if request.method == 'POST':
+        date = request.form['res_date']
+        restaurant = request.form['rest'][1:-1].split(',')
+        restaurant[0] = int(restaurant[0])
+        print(restaurant)
+        cur.execute("INSERT INTO reservation (username, date, rest_id, time) VALUES (?, ?, ?, ?)", (session['user'], date, restaurant[0], None))
+        conn.commit()
+
+    result = db.get_user_likes_and_reservations(session['user'])
+    
+    return render_template('user.html', data=result[0], res=result[1], user=session['user'])
+    
+
+@app.route('/makereservation', methods=['POST'])
+def makeReservation():
+    try:
+        rest_id = request.form['id']
+        restaurant = db.get_restaurant(rest_id)
+    except:
+        return redirect(url_for('defaultPage'))
+    return render_template('reservation.html', restaurant=restaurant, user=session['user'])
 
 
 @app.route('/search', methods=['GET', 'POST'])

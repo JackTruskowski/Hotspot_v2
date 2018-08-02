@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <style>
+      table, th, td {
+	  border: 1px solid black;
+      }
+    </style>
+    <title>Make Reservation</title>
+  </head>
+  <body bgcolor=white>
+
+    <h3>Make Reservation for {{ restaurant[2] }}</h3>
+    <form method="POST", action = "/userRes">
+      <label for="date">Date</label>
+      <input type="date" value="2018-08-01" min="2018-01-01" max="2019-01-01" id="date" name="res_date"><br>
+      <input type="hidden" name="rest" value= "{{ restaurant }}">
+      <input type="submit" value="Submit" style="margin:15px"> 
+    </form>
+    
+  </body>
+</html>

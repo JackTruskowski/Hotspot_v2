@@ -56,9 +56,13 @@
 	   <td>{{ item[4] }}</td>
 	   <td>{{ item[5] }}</td>
 	   <td>
-	     <form method="POST", action="/user">
+	     <form method="POST", action="/userLike">
 	       <input type="hidden" name = "id" value="{{ item[6] }}">
 	       <input type="submit" value="Save">
+	     </form>
+	     <form method="POST", action="/makereservation">
+	       <input type="hidden" name = "id" value="{{ item[6] }}">
+	       <input type="submit" value="Make Reservation">
 	     </form>
 	   </td>
 	 </tr>
@@ -72,7 +76,7 @@
     <p>No restaurant data is available.</p>
     {% endif %}
 
-    <form method="GET", action="/user">
+    <form method="GET", action="/userLike">
       <input type="submit" value="View Liked Restaurants" style="margin:15px">
     </form>
     <form method="GET", action="/logout">

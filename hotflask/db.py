@@ -31,6 +31,30 @@ def get_user(username, password):
     cur.execute("SELECT * FROM user WHERE username LIKE \"" + username + "\" AND password LIKE \"" + password + "\"")
     data = cur.fetchone()
     return data
+
+def get_restaurant(rest_id):
+    cur = connect()
+    try:
+        cur.execute("SELECT * FROM restaurant WHERE rest_id LIKE \"" + rest_id + "\"")
+        data = cur.fetchone()
+        return data
+    except:
+        return None
+
+    
+def get_user_likes_and_reservations(username):
+
+    cur = connect()
+    cur.execute("SELECT x.rname, x.address, x.zipcode, city.cname, x.rating, x.price_range FROM (SELECT *  FROM restaurant r INNER JOIN likes ON (r.rest_id=likes.restaurant_id AND likes.username LIKE \"" + username + "\"))x INNER JOIN city ON x.zipcode=city.zipcode LIMIT 100;")
+    data = cur.fetchall()
+
+    
+    cur.execute("SELECT restaurant.rname, x.date FROM restaurant INNER JOIN (SELECT * FROM reservation r INNER JOIN user ON r.username=user.username WHERE user.username LIKE \"" + username + "\")x ON restaurant.rest_id=x.rest_id")
+    res = cur.fetchall()
+
+    return (data, res)
+
+    
     
 def get_default_data():
     cur = connect()
