@@ -49,7 +49,7 @@ def get_user_likes_and_reservations(username):
     data = cur.fetchall()
 
     
-    cur.execute("SELECT restaurant.rname, x.date FROM restaurant INNER JOIN (SELECT * FROM reservation r INNER JOIN user ON r.username=user.username WHERE user.username LIKE \"" + username + "\")x ON restaurant.rest_id=x.rest_id")
+    cur.execute("SELECT restaurant.rname, x.date, x.time FROM restaurant INNER JOIN (SELECT * FROM reservation r INNER JOIN user ON r.username=user.username WHERE user.username LIKE \"" + username + "\")x ON restaurant.rest_id=x.rest_id")
     res = cur.fetchall()
 
     return (data, res)

@@ -7,10 +7,13 @@ from flask_login import current_user
 from flask_login import LoginManager
 from functools import wraps
 import db
+import random
+import string
 
 app = Flask(__name__)
 
-app.secret_key = "something unique and secret"
+#generate a random string to use for the secrety key
+app.secret_key = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)])
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 DATABASE = os.path.join(PROJECT_ROOT, 'instance', 'hotflask.sqlite')
@@ -99,10 +102,10 @@ def userRes():
 
     if request.method == 'POST':
         date = request.form['res_date']
-        restaurant = request.form['rest'][1:-1].split(',')
+        restaurant = request.form['res'][1:-1].split(',')
         restaurant[0] = int(restaurant[0])
-        print(restaurant)
-        cur.execute("INSERT INTO reservation (username, date, rest_id, time) VALUES (?, ?, ?, ?)", (session['user'], date, restaurant[0], None))
+        time = request.form['time']
+        cur.execute("INSERT INTO reservation (username, date, rest_id, time) VALUES (?, ?, ?, ?)", (session['user'], date, restaurant[0], time))
         conn.commit()
 
     result = db.get_user_likes_and_reservations(session['user'])

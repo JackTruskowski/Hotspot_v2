@@ -13,7 +13,9 @@
     <form method="POST", action = "/userRes">
       <label for="date">Date</label>
       <input type="date" value="2018-08-01" min="2018-01-01" max="2019-01-01" id="date" name="res_date"><br>
-      <input type="hidden" name="rest" value= "{{ restaurant }}">
+      <ablen for="time">Time</label>
+      <input type="time" id="time" name="time" min="8:00" max="23:59" required />
+      <input type="hidden" name="res" value= "{{ restaurant }}">
       <input type="submit" value="Submit" style="margin:15px"> 
     </form>
     
