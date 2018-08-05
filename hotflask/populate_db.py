@@ -18,14 +18,23 @@ with open('../data/restaurants3.csv') as f:
         
         if count >= MAX_COUNT:
             break
+
+        if count%500 == 0:
+            print(str(count) + " entries added.")
+        
         try:
             c.execute("INSERT INTO restaurant VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (row[0], row[10], row[1], row[2], row[6], row[7], row[8], row[13], row[9], row[5]))
+            
+            conn.commit()
+            count += 1
+            
             c.execute("INSERT INTO city VALUES (?, ?, ?, ?)", (row[5], row[4], row[3], row[11]))
             
             conn.commit()
-        except:
-            print("failed to commit an entry to the db")
-        count += 1
+        except Exception as e:
+            continue
+        
+    print("Added " + str(count) + " rows to the database.")
 
 conn.close()
 

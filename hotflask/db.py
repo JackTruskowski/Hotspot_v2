@@ -77,12 +77,13 @@ Given a username, pulls their likes and reservations from the relevant tables
 def get_user_likes_and_reservations(username):
 
     cur = connect()
-    cur.execute("SELECT x.rname, x.address, x.zipcode, city.cname, x.rating, x.price_range FROM (SELECT *  FROM restaurant r INNER JOIN likes ON (r.rest_id=likes.restaurant_id AND likes.username LIKE \"" + username + "\"))x INNER JOIN city ON x.zipcode=city.zipcode LIMIT 100;")
+    cur.execute("SELECT x.rname, x.address, x.zipcode, city.cname, x.rating, x.price_range, x.restaurant_id FROM (SELECT *  FROM restaurant r INNER JOIN likes ON (r.rest_id=likes.restaurant_id AND likes.username LIKE \"" + username + "\"))x INNER JOIN city ON x.zipcode=city.zipcode LIMIT 100;")
     data = cur.fetchall()
 
     
-    cur.execute("SELECT restaurant.rname, x.date, x.time FROM restaurant INNER JOIN (SELECT * FROM reservation r INNER JOIN user ON r.username=user.username WHERE user.username LIKE \"" + username + "\")x ON restaurant.rest_id=x.rest_id")
+    cur.execute("SELECT restaurant.rname, x.date, x.time, x.reservation_id FROM restaurant INNER JOIN (SELECT * FROM reservation r INNER JOIN user ON r.username=user.username WHERE user.username LIKE \"" + username + "\")x ON restaurant.rest_id=x.rest_id")
     res = cur.fetchall()
+    print(res)
 
     return (data, res)
 

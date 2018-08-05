@@ -83,6 +83,9 @@ def loginPage():
 
 @app.route('/userLike', methods=['GET', 'POST'])
 def userPage():
+
+    if not 'user' in session:
+        return redirect(url_for('loginPage'))
     
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
@@ -97,6 +100,10 @@ def userPage():
 
 @app.route('/userRes', methods=['GET', 'POST'])
 def userRes():
+
+    if not 'user' in session:
+        return redirect(url_for('loginPage'))
+    
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
 
@@ -111,10 +118,52 @@ def userRes():
     result = db.get_user_likes_and_reservations(session['user'])
     
     return render_template('user.html', data=result[0], res=result[1], user=session['user'])
+
+'''
+Deletes a restaurant entry from the likes table
+'''
+@app.route('/likeDelete', methods=['POST'])
+def likeDelete():
+
+    if not 'user' in session:
+        return redirect(url_for('loginPage'))
     
+    like_to_delete = request.form['like']
+
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM likes WHERE restaurant_id=" + like_to_delete + " AND username LIKE \"" + session['user'] + "\" ;")
+    conn.commit()
+
+    result = db.get_user_likes_and_reservations(session['user'])
+    return render_template('user.html', data=result[0], res=result[1], user=session['user'])
+
+'''
+Deletes a reservation entry from the reservation table
+'''
+@app.route('/resDelete', methods=['POST'])
+def resDelete():
+
+    if not 'user' in session:
+        return redirect(url_for('loginPage'))
+    
+    res_to_delete = request.form['res']
+
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM reservation WHERE reservation_id=" + res_to_delete + " AND username LIKE \"" + session['user'] + "\" ;")
+    conn.commit()
+
+    result = db.get_user_likes_and_reservations(session['user'])
+    return render_template('user.html', data=result[0], res=result[1], user=session['user'])
+
 
 @app.route('/makereservation', methods=['POST'])
 def makeReservation():
+
+    if not 'user' in session:
+        return redirect(url_for('loginPage'))
+    
     try:
         rest_id = request.form['id']
         restaurant = db.get_restaurant(rest_id)
@@ -125,6 +174,10 @@ def makeReservation():
 
 @app.route('/search', methods=['GET', 'POST'])
 def searchPage():
+
+    if not 'user' in session:
+        return redirect(url_for('loginPage'))
+    
     if request.method == 'POST':
         try:
             search_term = request.form['search']
