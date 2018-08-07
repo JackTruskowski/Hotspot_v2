@@ -68,7 +68,8 @@ def get_restaurant(rest_id):
         cur.execute("SELECT * FROM restaurant WHERE rest_id LIKE \"" + rest_id + "\"")
         data = cur.fetchone()
         return data
-    except:
+    except Exception as e:
+        print(e)
         return None
 
 '''
@@ -83,6 +84,7 @@ def get_user_likes_and_reservations(username):
     
     cur.execute("SELECT restaurant.rname, x.date, x.time, x.reservation_id FROM restaurant INNER JOIN (SELECT * FROM reservation r INNER JOIN user ON r.username=user.username WHERE user.username LIKE \"" + username + "\")x ON restaurant.rest_id=x.rest_id")
     res = cur.fetchall()
+    print(data)
     print(res)
 
     return (data, res)
