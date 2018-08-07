@@ -1,23 +1,39 @@
 <html>
   <head>
-    <style>
+      <link rel="icon" href="https://raw.githubusercontent.com/AlexWayfer/flame/master/public/favicon.ico">
+    <style type="text/css">
       table, th, td {
 	  border: 1px solid black;
       }
+    a:link, a:visited{
+        text-decoration: none;
+        color: black;
+    }
+    a:hover, a:active{
+        color: red;
+    }
+    p.submit-button{
+        text-align:right;
+        padding-bottom: 5px;
+        padding-right: 5px;
+    }
     </style>
-    <title>Make Reservation</title>
+    <title>HotSpot | Make Reservation</title>
   </head>
   <body bgcolor=white>
 
-    <h3>Make Reservation for {{ restaurant[2] }}</h3>
+<h3><a href="#">make reservation for {{ restaurant[2] }}</a></h3>
+<div style="background-color:linen; width:15%">
     <form method="POST", action = "/userRes">
-      <label for="date">Date</label>
-      <input type="date" value="2018-08-01" min="2018-01-01" max="2019-01-01" id="date" name="res_date"><br>
-      <ablen for="time">Time</label>
+        <br>
+      <label for="date">date</label>
+      <input type="date" value="2018-08-01" min="2018-01-01" max="2019-01-01" id="date" name="res_date"><br><br>
+      <ablen for="time">time</label>
       <input type="time" id="time" name="time" min="8:00" max="23:59" required />
       <input type="hidden" name="res" value= "{{ restaurant }}">
-      <input type="submit" value="Submit" style="margin:15px"> 
+      <p class="submit-button"><input type="submit" value="submit"></p>
     </form>
+    </div>
     
   </body>
 </html>

@@ -1,56 +1,109 @@
 <html>
   <head>
-    <style>
+      <link rel="icon" href="https://raw.githubusercontent.com/AlexWayfer/flame/master/public/favicon.ico">
+    <style type="text/css">
       table, th, td {
 	  border: 1px solid black;
       }
+    .form-textbox, .form-dropdown{
+        border: 0;
+        outline: 0;
+        height: 20px;
+        width:99%;
+        padding-left: 10px;
+        text-indent: 5px;
+        background-color: rgb(204, 204, 204);
+        color: #666;
+        text-align: center;
+    }
+    p.criteria-box{
+        font-style: normal;
+        text-align: center;
+    }
+    p.submit-button{
+        text-align:right;
+        padding-bottom: 5px;
+        padding-right: 5px;
+    }
+    a:link, a:visited{
+        text-decoration: none;
+        color: black;
+    }
+    a:hover, a:active{
+        color: red;
+    }
     </style>
-    <title>Hotspot Application</title>
+    <title>HotSpot | Home</title>
   </head>
   <body bgcolor=white>
 
-    <h1>Hotspot</h1>
+<h1><a href="#">HotSpot</a></h1>
 
-    <div style="background-color:linen;width:25%">
+    <div style="background-color:linen;width:30%">
       <form method="post", action="/">
-	Min Rating:<br>
-	<input type="text" name="minrating" style="background-color:linen"><br>
-	Max Rating:<br>
-	<input type="text" name="maxrating" style="background-color:linen"><br>
-	Price Range:<br>
-
-	<select name="pricerange">
+    <select class="form-dropdown" name="minrating">
+        <option value="" disabled selected>min rating</option>
+        <option value="1.0">1</option>
+        <option value="1.5">1.5</option>
+        <option value="2">2</option>
+        <option value="2">2.5</option>
+        <option value="3">3</option>
+        <option value="3.5">3.5</option>
+        <option value="4">4</option>
+        <option value="4.5">4.5</option>
+        <option value="5">5</option>
+    </select><br>
+    <br>
+    <select class="form-dropdown" name="maxrating"><br>
+        <option value="" disabled selected>max rating</option>
+        <option value="1.0">1</option>
+        <option value="1.5">1.5</option>
+        <option value="2">2</option>
+        <option value="2">2.5</option>
+        <option value="3">3</option>
+        <option value="3.5">3.5</option>
+        <option value="4">4</option>
+        <option value="4.5">4.5</option>
+        <option value="5">5</option>
+    </select><br>
+    <br>
+	<select class="form-dropdown" name="pricerange"><br>
+        <option value="" disabled selected>price range</option>
 	  <option value="$">$</option>
 	  <option value="$$">$$</option>
 	  <option value="$$$">$$$</option>
 	  <option value="$$$$">$$$$</option>
-	</select><br>
+	</select>
+    <br>
 	
-	Zipcode:<br>
-	<input type="text" name="zipcode" style="background-color:linen"><br>	
-	<input type="submit" value="Submit" style="margin:10px"> 
+	<p class="criteria-box">zipcode:
+	<input type="text" name="zipcode" style="background-color:white"><br>
+        </p>
+        <p class="submit-button"><input type="submit" value="submit" style="p.criteria-box" size="8"></p>
       </form>
     </div>
-
+    
+    <div style="background-color:white; width:30%">
     <form method="POST", action="/search">
-      Search: <br>
-      <input type="text" name="search">
-      <input type="submit" value="Submit">
+      search:
+      <input type="text" name="search" style="background-color:linen">
+      <input type="submit" value="submit">
     </form>
     <form method="GET", action = "/">
-      <input type="submit" value = "Clear"><br>
+        <input type="submit" value="clear" style="position: relative; left:25px"><br>
     </form>
+    </div>
 
      {% if data %}
      <div style="overflow-y:auto;height:500px">
        <table>
 	 <tr>
-	   <th>Name</th>
-	   <th>Address</th>
-	   <th>Zipcode</th>
-	   <th>City</th>
-	   <th>Rating</th>
-	   <th>Price</th>
+	   <th>name</th>
+	   <th>address</th>
+	   <th>zipcode</th>
+	   <th>city</th>
+	   <th>rating</th>
+	   <th>price</th>
 	   <th></th>
 	 </tr>
 
@@ -65,11 +118,11 @@
 	   <td>
 	     <form method="POST", action="/userLike">
 	       <input type="hidden" name = "id" value="{{ item[6] }}">
-	       <input type="submit" value="Save">
+	       <input type="submit" value="save">
 	     </form>
 	     <form method="POST", action="/makereservation">
 	       <input type="hidden" name = "id" value="{{ item[6] }}">
-	       <input type="submit" value="Make Reservation">
+	       <input type="submit" value="make reservation">
 	     </form>
 	   </td>
 	 </tr>
@@ -84,10 +137,10 @@
     {% endif %}
 
     <form method="GET", action="/userLike">
-      <input type="submit" value="View Liked Restaurants" style="margin:15px">
+      <input type="submit" value="view liked restaurants" style="margin:15px">
     </form>
     <form method="GET", action="/logout">
-      <input type="submit" value="Logout" style="margin:15px">
+      <input type="submit" value="logout" style="margin:15px">
     </form>
     
   </body>

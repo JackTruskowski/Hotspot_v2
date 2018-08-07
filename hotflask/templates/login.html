@@ -1,27 +1,44 @@
 <html>
   <head>
-    <style>
+      <link rel="icon" href="https://raw.githubusercontent.com/AlexWayfer/flame/master/public/favicon.ico">
+    <style type="text/css">
       table, th, td {
 	  border: 1px solid black;
       }
+    a:link, a:visited{
+        text-decoration: none;
+        color: black;
+    }
+    a:hover, a:active{
+        color: red;
+    }
+    p.login-button{
+        text-align:right;
+        padding-bottom: 5px;
+        padding-right: 5px;
+    }
     </style>
-    <title>Login</title>
+    <title>HotSpot | Login</title>
   </head>
   <body bgcolor=white>
 
-    <h1>User Login</h1>
+<h1><a href="#">user login</a></h1>
     
+    <div style="background-color:linen; width:15%">
     <form method="POST", action="/login">
-      <input type="text" name="username"><br>
-      <input type="password" id="password" name="password">
-      <div>
+        <br>
+        <input type="text" name="username" placeholder="username" style="padding-left:5px" size="15"><br>
+            <br><input type="password" id="password" name="password" placeholder="password" style="padding-left:5px" size="15"><br>
+      <div><br>
 	<input type="checkbox" id="newaccount" name="newaccount"
                value="newaccount" unchecked />
-        <label for="newaccount">New Account</label>
+        <label for="newaccount">new account</label>
       </div>
       
-      <input type="submit" value="Login" style="margin:10px">
+      
+      <p class=login-button><input type="submit" value="login"></p>
     </form>
+    </div>
     {% if error %}
     <br><b>{{ error }}</b>
     {% endif %}
