@@ -1,34 +1,41 @@
 <html>
   <head>
-    <style>
+      <link rel="icon" href="https://raw.githubusercontent.com/AlexWayfer/flame/master/public/favicon.ico">
+    <style type="text/css">
       table, th, td {
 	  border: 1px solid black;
       }
+    a:link, a:visited{
+        text-decoration: none;
+        color: black;
+    }
+    a:hover, a:active{
+        color: red;
+    }
     </style>
-    <title>User Page</title>
+    <title>HotSpot | User Page</title>
   </head>
   <body bgcolor=white>
 
     {% if user %}
-    <h1>{{ user }}</h1>
+    <h1><a href="#">{{ user }}</a></h1>
     {% else %}
-    <h1>[Unknown_User]</h1>
+    <h1><a href="#">[Unknown_User]</a></h1>
     {% endif %}
 
     
     {% if data %}
     <div style="overflow-y:auto;height:500px;display:inline-block">
       
-      <h3>Saved Restaurants</h3>
+      <h3>saved restaurants</h3>
       <table>
 	<tr>
-	  <th>Name</th>
-	  <th>Address</th>
-	  <th>Zipcode</th>
-	  <th>City</th>
-	  <th>Rating</th>
-	  <th>Price</th>
-	  <th></th>
+	  <th>name</th>
+	  <th>address</th>
+	  <th>zipcode</th>
+	  <th>city</th>
+	  <th>rating</th>
+	  <th>price</th>
 	</tr>
 
 
@@ -43,7 +50,7 @@
 	  <td>
 	    <form method="POST", action="/likeDelete">
 	      <input type="hidden" name="like" value="{{ item[6] }}">
-	      <input type="submit" value = "Delete">
+              <input type="submit" value = "delete">
 	    </form>
 	  </td>
 	</tr>
@@ -55,18 +62,18 @@
     </div>
     
     {% else %}
-    <p>No restaurant data is available.</p>
+    <p>no restaurant data is available</p>
     {% endif %}
 
     {% if res %}
     <div style="overflow-y:auto;height:500px;display:inline-block">
       
-      <h3>Reservations</h3>
+      <h3>reservations</h3>
       <table>
 	<tr>
-	  <th>Restaurant Name</th>
-	  <th>Date</th>
-	  <th>Time</th>
+	  <th>restaurant name</th>
+	  <th>date</th>
+	  <th>time</th>
 	</tr>
 
 
@@ -78,7 +85,7 @@
 	  <td>
 	    <form method="POST", action="/resDelete">
 	      <input type="hidden" name="res" value="{{ item[3] }}">
-	      <input type="submit" value = "Delete">
+	      <input type="submit" value = "delete">
 	    </form>
 	  </td>
 
@@ -90,12 +97,12 @@
       </table>
     </div>
     {% else %}
-    <p>No reservation data is available.</p>
+    <p>no reservation data is available</p>
     {% endif %}
     
     
     <form method="GET", action = "/">
-      <input type="submit" value = "Back">
+      <input type="submit" value = "back">
     </form>
     
   </body>
